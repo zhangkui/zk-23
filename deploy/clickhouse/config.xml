@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<yandex>
+    <logger>
+        <level>information</level>
+        <log>/var/log/clickhouse-server/clickhouse-server.log</log>
+        <errorlog>/var/log/clickhouse-server/clickhouse-server.err.log</errorlog>
+        <size>1000M</size>
+        <count>10</count>
+    </logger>
+
+    <http_port>8123</http_port>
+    <tcp_port>9000</tcp_port>
+
+    <listen_host>::</listen_host>
+
+    <max_connections>4096</max_connections>
+    <keep_alive_timeout>3s</keep_alive_timeout>
+
+    <max_concurrent_queries>256</max_concurrent_queries>
+    <max_memory_usage>10G</max_memory_usage>
+    <max_memory_usage_for_user>5G</max_memory_usage_for_user>
+
+    <default_profile>default</default_profile>
+    <default_database>default</default_database>
+
+    <timezone>Asia/Shanghai</timezone>
+
+    <profiles>
+        <default>
+            <max_memory_usage>10000000000</max_memory_usage>
+            <use_uncompressed_cache>0</use_uncompressed_cache>
+            <load_balancing>random</load_balancing>
+        </default>
+        <readonly>
+            <max_memory_usage>5000000000</max_memory_usage>
+            <use_uncompressed_cache>0</use_uncompressed_cache>
+            <load_balancing>random</load_balancing>
+            <readonly>1</readonly>
+        </readonly>
+    </profiles>
+
+    <users>
+        <default>
+            <password remove="1"/>
+            <password_from_env>CLICKHOUSE_PASSWORD</password_from_env>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <profile>default</profile>
+            <quota>default</quota>
+        </default>
+        <readonly>
+            <password>readonly_pass</password>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <profile>readonly</profile>
+            <quota>default</quota>
+        </readonly>
+    </users>
+
+    <quotas>
+        <default>
+            <interval>
+                <duration>3600</duration>
+                <queries>0</queries>
+                <errors>0</errors>
+                <result_rows>0</result_rows>
+                <read_rows>0</read_rows>
+                <execution_time>0</execution_time>
+            </interval>
+        </default>
+    </quotas>
+
+    <merge_tree>
+        <old_parts_lifetime>3600</old_parts_lifetime>
+        <max_bytes_to_merge_at_max_space_in_pool>10737418240</max_bytes_to_merge_at_max_space_in_pool>
+        <max_replicated_merges_in_queue>16</max_replicated_merges_in_queue>
+    </merge_tree>
+</yandex>
